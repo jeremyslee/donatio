@@ -5,6 +5,7 @@ import Navigation from './Navigation.jsx'
 import LoginContainer from './LoginContainer.jsx'
 import CharityList from './CharityList.jsx'
 import PurchaseContainer from './PurchaseContainer.jsx'
+import SignUp from './SignUp.jsx'
 import axios from 'axios'
 
 class App extends Component {
@@ -30,9 +31,11 @@ class App extends Component {
         },
       ],
       isLoggedIn: undefined,
-      isSignedIn: false,
+      isLoggedInPage: null,
+      isSignedIn: null,
       username: '',
       password: '',
+      rptPassword: '',
       email: ''
     }
     this.handleChange = this.handleChange.bind(this)
@@ -40,10 +43,11 @@ class App extends Component {
     this.logout = this.logout.bind(this)
     this.login = this.login.bind(this)
     this.createAccount = this.createAccount.bind(this)
+    this.cancel = this.cancel.bind(this)
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   handleSubmit(e) {
@@ -51,9 +55,12 @@ class App extends Component {
     const username = this.state.username
     this.setState({
       isLoggedIn: username,
+      isLoggedInPage:true,
       isSignedIn: true,
       username: '',
       password: '',
+      rptPassword: '',
+      email: ''
     })
   }
 
@@ -65,34 +72,41 @@ class App extends Component {
         username,
         password
       })
-      .then(() => {
-        this.setState({ isSignedIn: true })
-      })
-      .catch(() => {
-        this.setState({ isSignedIn: false })
-      });
+        .then(() => {
+          this.setState({ isLoggedInPage: true })
+        })
+        .catch(() => {
+          this.setState({ isLoggedInPage: false })
+        });
     }
   }
 
   logout() {
-    this.setState({isLoggedIn: false})
+    this.setState({ isLoggedIn: false, isSignedIn: false, isLoggedInPage: false})
   }
 
   createAccount(e) {
-     e.preventDefault()
-    const { username, password } = this.state
-    if (username && password) {
-      axios.post('/createUser', {
+    e.preventDefault()
+    const { email, username, password, rptPassword } = this.state
+    if (username && password && email && rptPassword) {
+      axios.post('/signup', {
+        email,
         username,
         password
       })
-      .then(() => {
-        this.setState({ isSignedIn: true })
-      })
-      .catch(() => {
-        this.setState({ isSignedIn: false })
-      });
+        .then(() => {
+          this.setState({ isSignedIn: true })
+        })
+        .catch(() => {
+          this.setState({ isSignedIn: false })
+        });
     }
+  }
+
+
+  cancel() {
+    console.log('you clicked cancel')
+    this.setState({ email: '', username: '', password: '', rstPassword: ''})
   }
 
   render() {
@@ -102,27 +116,37 @@ class App extends Component {
           render={(props) => <Navigation {...props}
             isLoggedIn={this.state.isLoggedIn}
             username={this.state.username}
-            />}
-          />
+          />}
+        />
         <Route exact path='/'
           render={(props) => <CharityList {...props}
             charityList={this.state.charityList}
-            />}
-          />
+          />}
+        />
         <Route exact path='/login'
           render={(props) => <LoginContainer {...props}
             isLoggedIn={this.state.isLoggedIn}
-            isSignedIn={this.state.isSignedIn}
+            isLoggedInPage={this.state.isLoggedInPage}
             username={this.state.username}
             password={this.state.password}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             login={this.login}
             logout={this.logout}
-            />}
-          />
-        <Route exact path='/signin'
-
+          />}
+        />
+        <Route exact path='/signup'
+          render={(props) => <SignUp {...props}
+            isSignedIn={this.state.isSignedIn}
+            email={this.state.email}
+            username={this.state.username}
+            password={this.state.password}
+            rptPassword={this.state.rptPassword}
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+            createAccount={this.createAccount}
+            cancel={this.cancel}
+          />}
         />
         <Route path='/cart' component={PurchaseContainer} />
       </div>

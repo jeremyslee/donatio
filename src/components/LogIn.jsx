@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import SignUp from './SignUp.js';
+// import SignUp from './SignUp.js';
 
 class LogIn extends Component {
   render() {
@@ -13,11 +13,11 @@ class LogIn extends Component {
           <input type='password' name='password' value={this.props.password} placeholder='password' onChange={this.props.handleChange} />
           <button type='submit' onClick={this.props.login} >login</button>
         </form>
-        Don't have an account? 
-        <Link to='/signin'>Sign up</Link>
+        Don't have an account? <br/>
+        <Link to='/signup'>Sign up HERE</Link>
       </div>
       
     );
   };
 }
-export default SignIn;
+export default LogIn;

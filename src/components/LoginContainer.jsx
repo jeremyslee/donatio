@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AccountDetail from './AccountDetail';
-import SignIn from './SignIn.jsx'
+import AccountDetail from './AccountDetail.jsx';
+import LogIn from './LogIn.jsx'
 
 
 class LoginContainer extends Component {
