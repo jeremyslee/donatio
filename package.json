@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ksampias/donatio#readme",
   "dependencies": {
+    "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
     "db": "^1.0.6",

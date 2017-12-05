@@ -11,7 +11,7 @@ class LoginContainer extends Component {
           <AccountDetail
             logout={this.props.logout}
           /> :
-          <SignIn
+          <LogIn
             username={this.props.username}
             password={this.props.password}
             handleChange={this.props.handleChange}
