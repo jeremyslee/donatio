@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AccountDetail from './AccountDetail';
+import AccountDetail from './AccountDetail.jsx';
 import SignIn from './SignIn.jsx'
 
 

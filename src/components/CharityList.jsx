@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Charity from './Charity';
+import Charity from './Charity.jsx';
 
 class CharityList extends Component {
   render() {
