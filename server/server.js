@@ -17,7 +17,6 @@ app.use(bodyParser.json());
 
 app.use(logger('short'));
 
-const newLocal = app.get;
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, 'index.html'))
