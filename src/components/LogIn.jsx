@@ -13,9 +13,11 @@ class LogIn extends Component {
           <input className='passLog' type='password' name='passwordLogin' value={this.props.passwordLogin} placeholder='password' onChange={this.props.handleChange} /> <br/>
           <button className='logBtn' type='submit'>Login</button> <br/>
         </form>
-        {(this.props.isLoggedInPage === false) && <p className='alert'>Username and password combination is invalid</p>}
+        {(this.props.isLoggedInPage === false) && <p className='alert'>Username and password combination is invalid</p>} <br/>
+        <Link to='/forgotPass'> Forgot your password? </Link>
+
         <div className='noAcc'>Don't have an account? <br/>
-        <Link to='/signup' style={{ textDecoration: 'none' }}><button className='signBtn'>Sign up</button></Link>
+        <Link to='/signup' style={{ 'textDecoration': 'none' }}><button className='signBtn'>Sign up</button></Link>
         </div>
       </div>
       
