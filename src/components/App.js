@@ -37,6 +37,7 @@ class App extends Component {
       lastname: '',
       addedToCart: [],
       transactionConfirmed: false,
+      userId: undefined,
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
@@ -71,8 +72,8 @@ class App extends Component {
         usernameLogin,
         passwordLogin
       })
-        .then(() => {
-          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' })
+        .then((response) => {
+          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '', userId: response.data.id })
         })
         .catch(() => {
           this.setState({ isLoggedInPage: false })
@@ -172,6 +173,7 @@ class App extends Component {
             handleChange={this.handleChange}
             login={this.login}
             logout={this.logout}
+            userId={this.state.userId}
           />}
         />
         <Route exact path='/forgotPass'

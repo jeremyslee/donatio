@@ -6,7 +6,8 @@ const userController = {
         const query = `SELECT * FROM "user" WHERE username = '${req.body.usernameLogin}' AND password = '${req.body.passwordLogin}'`;
         db.conn.one(query)
             .then(postLogin => {
-                res.status(200).send({ 'msg': 'Login successful' });
+                console.log("id:", postLogin.user_id)
+                res.status(200).send({ 'msg': 'Login successful', 'id': `${postLogin.user_id}` });
             })
             .catch(err => {
                 console.log('The error is', err);

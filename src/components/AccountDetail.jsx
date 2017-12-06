@@ -7,7 +7,7 @@ class AccountDetail extends Component {
       <div>
         Account Details
         <br />You are logged in.
-        <PurchaseHistory />
+        <PurchaseHistory userId={this.props.userId} />
         <div>
         <button onClick={this.props.logout}>logout</button>
         </div>
