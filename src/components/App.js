@@ -31,9 +31,10 @@ class App extends Component {
       password: '',
       rstPassword: '',
       email: '',
-      addedToCart: [],
       firstname: '',
-      lastname: ''
+      lastname: '',
+      addedToCart: [],
+      transactionConfirmed: false,
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
@@ -41,6 +42,8 @@ class App extends Component {
     this.createAccount = this.createAccount.bind(this)
     this.cancel = this.cancel.bind(this)
     this.addToCart = this.addToCart.bind(this)
+    this.removeFromCart = this.removeFromCart.bind(this)
+    this.processTransaction = this.processTransaction.bind(this)
   }
 
   componentDidMount() {
@@ -79,12 +82,6 @@ class App extends Component {
     this.setState({ isLoggedIn: false, isSignedIn: false })
   }
 
-  addToCart(organization) {
-      let addedToCart = this.state.addedToCart.slice()
-      addedToCart.push({organization, amount: 5})
-      this.setState({addedToCart: addedToCart})
-  }
-
   createAccount(e) {
     e.preventDefault()
     const { email, username, password, rstPassword, firstname, lastname } = this.state
@@ -115,9 +112,35 @@ class App extends Component {
     }
   }
 
-
   cancel() {
     this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' })
+  }
+
+  addToCart(organization) {
+    let addedToCart = this.state.addedToCart.slice()
+    let alreadyInCart = false
+    for (let i = 0; i < addedToCart.length; i += 1) {
+      if(addedToCart[i].organization === organization) {
+        alreadyInCart = true
+        addedToCart[i].amount += 5
+      }
+    }
+    if (!alreadyInCart) addedToCart.push({organization, amount: 5})
+    this.setState({addedToCart: addedToCart})
+  }
+
+  removeFromCart(item) {
+    let currentCart = this.state.addedToCart.slice()
+    currentCart.splice(item, 1)
+    this.setState({addedToCart: currentCart})
+  }
+
+  processTransaction() {
+    console.log('transaction processed')
+    this.setState({
+      transactionConfirmed: true,
+      addedToCart: [],
+    })
   }
 
   render() {
@@ -166,6 +189,9 @@ class App extends Component {
         <Route path='/cart'
           render={(props) => <PurchaseContainer
             addedToCart={this.state.addedToCart}
+            removeFromCart={this.removeFromCart}
+            processTransaction={this.processTransaction}
+            transactionConfirmed={this.state.transactionConfirmed}
             />}
           />
       </div>
