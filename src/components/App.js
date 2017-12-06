@@ -38,13 +38,15 @@ class App extends Component {
       username: '',
       password: '',
       rstPassword: '',
-      email: ''
+      email: '',
+      addedToCart: [],
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
     this.login = this.login.bind(this)
     this.createAccount = this.createAccount.bind(this)
     this.cancel = this.cancel.bind(this)
+    this.addToCart = this.addToCart.bind(this)
   }
 
   handleChange(e) {
@@ -75,6 +77,12 @@ class App extends Component {
 
   logout() {
     this.setState({ isLoggedIn: false, isSignedIn: false, isLoggedInPage: false })
+  }
+
+  addToCart(organization) {
+      let addedToCart = this.state.addedToCart.slice()
+      addedToCart.push({organization, amount: 5})
+      this.setState({addedToCart: addedToCart})
   }
 
   createAccount(e) {
@@ -117,11 +125,13 @@ class App extends Component {
             usernameLogin={this.state.usernameLogin}
             isSignedIn={this.state.isSignedIn}
             username={this.state.username}
+            addedToCart={this.state.addedToCart}
           />}
         />
         <Route exact path='/'
           render={(props) => <CharityList {...props}
             charityList={this.state.charityList}
+            addToCart={this.addToCart}
           />}
         />
         <Route exact path='/login'
@@ -147,7 +157,11 @@ class App extends Component {
             cancel={this.cancel}
           />}
         />
-        <Route path='/cart' component={PurchaseContainer} />
+        <Route path='/cart'
+          render={(props) => <PurchaseContainer
+            addedToCart={this.state.addedToCart}
+            />}
+          />
       </div>
     );
   }
