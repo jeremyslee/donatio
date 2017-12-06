@@ -24738,9 +24738,10 @@ var App = function (_Component) {
       password: '',
       rstPassword: '',
       email: '',
-      addedToCart: [],
       firstname: '',
-      lastname: ''
+      lastname: '',
+      addedToCart: [],
+      transactionConfirmed: false
     };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.logout = _this.logout.bind(_this);
@@ -24748,6 +24749,8 @@ var App = function (_Component) {
     _this.createAccount = _this.createAccount.bind(_this);
     _this.cancel = _this.cancel.bind(_this);
     _this.addToCart = _this.addToCart.bind(_this);
+    _this.removeFromCart = _this.removeFromCart.bind(_this);
+    _this.processTransaction = _this.processTransaction.bind(_this);
     return _this;
   }
 
@@ -24795,13 +24798,6 @@ var App = function (_Component) {
       this.setState({ isLoggedIn: false, isSignedIn: false });
     }
   }, {
-    key: 'addToCart',
-    value: function addToCart(organization) {
-      var addedToCart = this.state.addedToCart.slice();
-      addedToCart.push({ organization: organization, amount: 5 });
-      this.setState({ addedToCart: addedToCart });
-    }
-  }, {
     key: 'createAccount',
     value: function createAccount(e) {
       var _this4 = this;
@@ -24843,6 +24839,36 @@ var App = function (_Component) {
     key: 'cancel',
     value: function cancel() {
       this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' });
+    }
+  }, {
+    key: 'addToCart',
+    value: function addToCart(organization) {
+      var addedToCart = this.state.addedToCart.slice();
+      var alreadyInCart = false;
+      for (var i = 0; i < addedToCart.length; i += 1) {
+        if (addedToCart[i].organization === organization) {
+          alreadyInCart = true;
+          addedToCart[i].amount += 5;
+        }
+      }
+      if (!alreadyInCart) addedToCart.push({ organization: organization, amount: 5 });
+      this.setState({ addedToCart: addedToCart });
+    }
+  }, {
+    key: 'removeFromCart',
+    value: function removeFromCart(item) {
+      var currentCart = this.state.addedToCart.slice();
+      currentCart.splice(item, 1);
+      this.setState({ addedToCart: currentCart });
+    }
+  }, {
+    key: 'processTransaction',
+    value: function processTransaction() {
+      console.log('transaction processed');
+      this.setState({
+        transactionConfirmed: true,
+        addedToCart: []
+      });
     }
   }, {
     key: 'render',
@@ -24911,7 +24937,10 @@ var App = function (_Component) {
         _react2.default.createElement(_reactRouterDom.Route, { path: '/cart',
           render: function render(props) {
             return _react2.default.createElement(_PurchaseContainer2.default, {
-              addedToCart: _this5.state.addedToCart
+              addedToCart: _this5.state.addedToCart,
+              removeFromCart: _this5.removeFromCart,
+              processTransaction: _this5.processTransaction,
+              transactionConfirmed: _this5.state.transactionConfirmed
             });
           }
         })
@@ -25106,6 +25135,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _PurchaseHistory = __webpack_require__(129);
+
+var _PurchaseHistory2 = _interopRequireDefault(_PurchaseHistory);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25132,6 +25165,7 @@ var AccountDetail = function (_Component) {
         'Account Details',
         _react2.default.createElement('br', null),
         'You are logged in.',
+        _react2.default.createElement(_PurchaseHistory2.default, null),
         _react2.default.createElement(
           'div',
           null,
@@ -25499,12 +25533,20 @@ var PurchaseContainer = function (_Component) {
   _createClass(PurchaseContainer, [{
     key: 'render',
     value: function render() {
-      var itemsInCart = this.props.addedToCart;
-      var donationId = false;
+      var _props = this.props,
+          addedToCart = _props.addedToCart,
+          removeFromCart = _props.removeFromCart,
+          processTransaction = _props.processTransaction,
+          transactionConfirmed = _props.transactionConfirmed;
+
       return _react2.default.createElement(
         'div',
         null,
-        donationId ? _react2.default.createElement(_TransactionConfirmation2.default, null) : _react2.default.createElement(_ShoppingCart2.default, { addedToCart: itemsInCart })
+        transactionConfirmed ? _react2.default.createElement(_TransactionConfirmation2.default, null) : _react2.default.createElement(_ShoppingCart2.default, {
+          addedToCart: addedToCart,
+          removeFromCart: removeFromCart,
+          processTransaction: processTransaction
+        })
       );
     }
   }]);
@@ -25557,10 +25599,12 @@ var ShoppingCart = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var addedToCart = this.props.addedToCart;
+      var _props = this.props,
+          addedToCart = _props.addedToCart,
+          processTransaction = _props.processTransaction;
 
       var items = addedToCart.map(function (item, index) {
-        return _react2.default.createElement(_CartItem2.default, { key: index, addedToCart: _this2.props.addedToCart, item: item });
+        return _react2.default.createElement(_CartItem2.default, { key: index, id: index, addedToCart: _this2.props.addedToCart, item: item, removeFromCart: _this2.props.removeFromCart });
       });
       return _react2.default.createElement(
         'div',
@@ -25572,7 +25616,7 @@ var ShoppingCart = function (_Component) {
           items,
           _react2.default.createElement(
             'button',
-            null,
+            { onClick: processTransaction },
             'Donate Now!'
           )
         ) : 'Your cart is empty'
@@ -25625,6 +25669,9 @@ var CartItem = function (_Component) {
       var _props$item = this.props.item,
           organization = _props$item.organization,
           amount = _props$item.amount;
+      var _props = this.props,
+          removeFromCart = _props.removeFromCart,
+          id = _props.id;
 
       return _react2.default.createElement(
         'div',
@@ -25640,6 +25687,13 @@ var CartItem = function (_Component) {
           '$',
           amount,
           '.00'
+        ),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              return removeFromCart(id);
+            } },
+          'Remove'
         )
       );
     }
@@ -26906,6 +26960,56 @@ module.exports = function spread(callback) {
   };
 };
 
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PurchaseHistory = function (_Component) {
+  _inherits(PurchaseHistory, _Component);
+
+  function PurchaseHistory() {
+    _classCallCheck(this, PurchaseHistory);
+
+    return _possibleConstructorReturn(this, (PurchaseHistory.__proto__ || Object.getPrototypeOf(PurchaseHistory)).apply(this, arguments));
+  }
+
+  _createClass(PurchaseHistory, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        'Purchase history will display here.'
+      );
+    }
+  }]);
+
+  return PurchaseHistory;
+}(_react.Component);
+
+exports.default = PurchaseHistory;
 
 /***/ })
 /******/ ]);
