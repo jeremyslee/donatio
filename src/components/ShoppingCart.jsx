@@ -3,10 +3,13 @@ import CartItem from './CartItem.jsx'
 
 class ShoppingCart extends Component {
   render() {
-    const { addedToCart } = this.props
+    const {
+      addedToCart,
+      processTransaction,
+    } = this.props
     const items = addedToCart.map(
       (item, index) => {
-        return <CartItem key={index} addedToCart={this.props.addedToCart} item={item} />
+        return <CartItem key={index} id={index} addedToCart={this.props.addedToCart} item={item} removeFromCart={this.props.removeFromCart}/>
       }
     )
     return (
@@ -17,7 +20,7 @@ class ShoppingCart extends Component {
           <div>
             My Shopping Cart
             {items}
-            <button>Donate Now!</button>
+            <button onClick={processTransaction}>Donate Now!</button>
           </div>
           :
           'Your cart is empty'

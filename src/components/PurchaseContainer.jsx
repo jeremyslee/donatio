@@ -4,15 +4,23 @@ import TransactionConfirmation from './TransactionConfirmation.jsx'
 
 class PurchaseContainer extends Component {
   render() {
-    const itemsInCart = this.props.addedToCart
-    const donationId = false
+    const {
+      addedToCart,
+      removeFromCart,
+      processTransaction,
+      transactionConfirmed,
+    } = this.props
     return (
       <div>
         {
-          donationId ?
+          transactionConfirmed ?
           <TransactionConfirmation />
           :
-          <ShoppingCart addedToCart={itemsInCart} />
+          <ShoppingCart
+            addedToCart={addedToCart}
+            removeFromCart={removeFromCart}
+            processTransaction={processTransaction}
+            />
         }
       </div>
     );
