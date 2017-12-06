@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const eventController = require('./controllers/eventController');
+const userController = require('./controllers/userController');
 const logger = require('morgan');
 const scrapeController = require('./scraper');
 
@@ -13,6 +13,7 @@ const app = express();
 const PUBLIC_DIR = path.join(__dirname, "../public");
 app.use(express.static(PUBLIC_DIR));
 
+app.use(bodyParser.urlencoded({ extended : true}));
 app.use(bodyParser.json());
 
 app.use(logger('short'));
@@ -22,19 +23,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, 'index.html'))
 })
 
-app.post('/createUser', eventController.createUser);
+app.post('/login', userController.postLogin)
 
-app.post('/login', (req, res) => {
-  console.log('user is logged in')
-  res.status(200).send('OK')
-})
+app.post('/signup', userController.createUser)
 
-app.post('/signup', (req, res) => {
-  console.log('sign up')
-  res.status(200).send('OK')
-})
-
-app.get('/getCharityInfo', eventController.getCharityInfo);
+// app.get('/getCharityInfo', eventController.getCharityInfo);
 
 app.get('/crawler', scrapeController.scrapeCharity)
 

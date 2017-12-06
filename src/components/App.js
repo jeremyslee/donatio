@@ -14,21 +14,13 @@ class App extends Component {
     this.state = {
       charityList: [
         {
-          organization: 'Women for Women',
-          title: 'Education material for poor school children',
-          image: 'https://www.globalgiving.org/pfil/31262/pict_large.jpg',
-          summary: 'Ammapalayam, Panchayat Union middle school in Arni Block, Thriuvannamalai district. 210 poor children studying in our school. Quality educa…',
-          category: 'Education',
-          country: 'India',
-        },
-        {
-          organization: 'Community Health, Housing, and Social Education',
-          title: 'Support negelected elders with food, medicine, and clothing',
-          image: 'https://www.globalgiving.org/pfil/31247/pict_original.jpg',
-          summary: 'The less privileged elders need food, love and care. This project will provide meals to 57 homeless old age persons. Every day we provide nu…',
-          category: 'Hunger',
-          country: 'India',
-        },
+          organization: '',
+          title: '',
+          image: '',
+          summary: '',
+          category: '',
+          country: '',
+        }
       ],
       isLoggedIn: undefined,
       isLoggedInPage: null,
@@ -40,6 +32,8 @@ class App extends Component {
       rstPassword: '',
       email: '',
       addedToCart: [],
+      firstname: '',
+      lastname: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
@@ -49,6 +43,16 @@ class App extends Component {
     this.addToCart = this.addToCart.bind(this)
   }
 
+  componentDidMount() {
+    axios.get('/crawler')
+    .then((response) => {
+      this.setState({charityList: response.data})
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
@@ -56,27 +60,23 @@ class App extends Component {
   login(e) {
     e.preventDefault()
     const { usernameLogin, passwordLogin } = this.state
-    console.log('i click here')
     const successUsername = this.state.usernameLogin
     if (usernameLogin && passwordLogin) {
-      console.log('1')
       axios.post('/login', {
         usernameLogin,
         passwordLogin
       })
         .then(() => {
-          console.log('2')
           this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' })
         })
         .catch(() => {
-          console.log('3')
           this.setState({ isLoggedInPage: false })
         });
     }
   }
 
   logout() {
-    this.setState({ isLoggedIn: false, isSignedIn: false, isLoggedInPage: false })
+    this.setState({ isLoggedIn: false, isSignedIn: false })
   }
 
   addToCart(organization) {
@@ -87,19 +87,23 @@ class App extends Component {
 
   createAccount(e) {
     e.preventDefault()
-    const { email, username, password, rstPassword } = this.state
+    const { email, username, password, rstPassword, firstname, lastname } = this.state
     const successUsername = this.state.username
-    if (username && password && email && rstPassword) {
+    if (firstname && lastname && username && password && email && rstPassword) {
       axios.post('/signup', {
         email,
         username,
-        password
+        password,
+        firstname,
+        lastname
       })
         .then(() => {
           this.setState({
             isSignedIn: true,
             isLoggedIn: successUsername,
             username: '',
+            firstname: '',
+            lastname: '',
             password: '',
             rstPassword: '',
             email: ''
@@ -113,7 +117,7 @@ class App extends Component {
 
 
   cancel() {
-    this.setState({ email: '', username: '', password: '', rstPassword: '' })
+    this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' })
   }
 
   render() {
@@ -148,6 +152,8 @@ class App extends Component {
         <Route exact path='/signup'
           render={(props) => <SignUp {...props}
             isSignedIn={this.state.isSignedIn}
+            firstname={this.state.firstname}
+            lastname={this.state.lastname}
             email={this.state.email}
             username={this.state.username}
             password={this.state.password}
