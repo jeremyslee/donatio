@@ -10,6 +10,7 @@ class LoginContainer extends Component {
         {this.props.isLoggedIn ?
           <AccountDetail
             logout={this.props.logout}
+            userId={this.props.userId}
           /> :
           <LogIn
             usernameLogin={this.props.usernameLogin}
