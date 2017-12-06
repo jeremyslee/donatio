@@ -14,21 +14,13 @@ class App extends Component {
     this.state = {
       charityList: [
         {
-          organization: 'Women for Women',
-          title: 'Education material for poor school children',
-          image: 'https://www.globalgiving.org/pfil/31262/pict_large.jpg',
-          summary: 'Ammapalayam, Panchayat Union middle school in Arni Block, Thriuvannamalai district. 210 poor children studying in our school. Quality educa…',
-          category: 'Education',
-          country: 'India',
-        },
-        {
-          organization: 'Community Health, Housing, and Social Education',
-          title: 'Support negelected elders with food, medicine, and clothing',
-          image: 'https://www.globalgiving.org/pfil/31247/pict_original.jpg',
-          summary: 'The less privileged elders need food, love and care. This project will provide meals to 57 homeless old age persons. Every day we provide nu…',
-          category: 'Hunger',
-          country: 'India',
-        },
+          organization: '',
+          title: '',
+          image: '',
+          summary: '',
+          category: '',
+          country: '',
+        }
       ],
       isLoggedIn: undefined,
       isLoggedInPage: null,
@@ -49,6 +41,16 @@ class App extends Component {
     this.cancel = this.cancel.bind(this)
   }
 
+  componentDidMount() {
+    axios.get('/crawler')
+    .then((response) => {
+      this.setState({charityList: response.data})
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
@@ -56,27 +58,23 @@ class App extends Component {
   login(e) {
     e.preventDefault()
     const { usernameLogin, passwordLogin } = this.state
-    console.log('i click here')
     const successUsername = this.state.usernameLogin
     if (usernameLogin && passwordLogin) {
-      console.log('1')
       axios.post('/login', {
         usernameLogin,
         passwordLogin
       })
         .then(() => {
-          console.log('2')
           this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' })
         })
         .catch(() => {
-          console.log('3')
           this.setState({ isLoggedInPage: false })
         });
     }
   }
 
   logout() {
-    this.setState({ isLoggedIn: false, isSignedIn: false, isLoggedInPage: false })
+    this.setState({ isLoggedIn: false, isSignedIn: false })
   }
 
   createAccount(e) {
@@ -96,7 +94,7 @@ class App extends Component {
             isSignedIn: true,
             isLoggedIn: successUsername,
             username: '',
-            firstname:'',
+            firstname: '',
             lastname: '',
             password: '',
             rstPassword: '',
@@ -111,7 +109,7 @@ class App extends Component {
 
 
   cancel() {
-    this.setState({ email: '', username: '', password: '', rstPassword: '', firstname:'', lastname: '' })
+    this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' })
   }
 
   render() {

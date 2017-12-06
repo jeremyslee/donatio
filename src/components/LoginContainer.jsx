@@ -15,6 +15,7 @@ class LoginContainer extends Component {
             usernameLogin={this.props.usernameLogin}
             passwordLogin={this.props.passwordLogin}
             handleChange={this.props.handleChange}
+            isLoggedInPage={this.props.isLoggedInPage}
             login={this.props.login}
           />}
       </div>
