@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AccountDetail from './AccountDetail.jsx';
-import SignIn from './SignIn.jsx'
+import LogIn from './LogIn.jsx'
 
 
 class LoginContainer extends Component {
@@ -11,11 +11,11 @@ class LoginContainer extends Component {
           <AccountDetail
             logout={this.props.logout}
           /> :
-          <SignIn
-            username={this.props.username}
-            password={this.props.password}
+          <LogIn
+            usernameLogin={this.props.usernameLogin}
+            passwordLogin={this.props.passwordLogin}
             handleChange={this.props.handleChange}
-            handleSubmit={this.props.handleSubmit}
+            login={this.props.login}
           />}
       </div>
     );

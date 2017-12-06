@@ -17,11 +17,22 @@ app.use(bodyParser.json());
 
 app.use(logger('short'));
 
-app.get("/", function(req, res) {
+
+app.get("/", (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, 'index.html'))
 })
 
 app.post('/createUser', eventController.createUser);
+
+app.post('/login', (req, res) => {
+  console.log('user is logged in')
+  res.status(200).send('OK')
+})
+
+app.post('/signup', (req, res) => {
+  console.log('sign up')
+  res.status(200).send('OK')
+})
 
 app.get('/getCharityInfo', eventController.getCharityInfo);
 

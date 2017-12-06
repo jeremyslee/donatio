@@ -7,7 +7,7 @@ class Navigation extends Component {
       <div>
         <ul>
         <li><Link to='/'>home</Link></li>
-        <li><Link to='/login'>{this.props.isLoggedIn ? `Hello ${this.props.isLoggedIn}!` : 'login'}</Link></li>
+        <li><Link to='/login'>{this.props.isLoggedIn || this.props.isSignedIn ? `Hello ${this.props.isLoggedIn}!` : 'login'}</Link></li>
         <li><Link to='/cart'>cart</Link></li>
         </ul>
       </div>
