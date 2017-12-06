@@ -24804,7 +24804,14 @@ var App = function (_Component) {
           username: username,
           password: password
         }).then(function () {
-          _this3.setState({ isSignedIn: true, isLoggedIn: successUsername });
+          _this3.setState({
+            isSignedIn: true,
+            isLoggedIn: successUsername,
+            username: '',
+            password: '',
+            rstPassword: '',
+            email: ''
+          });
         }).catch(function () {
           _this3.setState({ isSignedIn: false });
         });
