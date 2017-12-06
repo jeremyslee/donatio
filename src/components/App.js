@@ -6,6 +6,7 @@ import LoginContainer from './LoginContainer.jsx'
 import CharityList from './CharityList.jsx'
 import PurchaseContainer from './PurchaseContainer.jsx'
 import SignUp from './SignUp.jsx'
+import ForgotPassword from './ForgotPassword.jsx'
 import axios from 'axios'
 
 class App extends Component {
@@ -115,7 +116,6 @@ class App extends Component {
     }
   }
 
-
   cancel() {
     this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' })
   }
@@ -147,6 +147,12 @@ class App extends Component {
             handleChange={this.handleChange}
             login={this.login}
             logout={this.logout}
+          />}
+        />
+        <Route exact path='/forgotPass'
+          render={(props) => <ForgotPassword {...props}
+            email={this.state.email}
+            handleChange={this.handleChange}
           />}
         />
         <Route exact path='/signup'
