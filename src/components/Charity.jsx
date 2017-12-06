@@ -14,7 +14,7 @@ class CharityList extends Component {
         <p>By: {this.props.charity.organization}</p>
         <p>Summary: {this.props.charity.summary}</p>
         </div>
-        <button className='add-to-cart-button'>Add to cart</button>
+        <button className='add-to-cart-button' onClick={() => this.props.addToCart(this.props.charity.organization)}>Add to cart</button>
       </div>
     );
   };
