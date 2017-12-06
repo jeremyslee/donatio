@@ -4,15 +4,18 @@ import '../styles/SignUp.css';
 
 class SignUp extends Component {
     render() {
-        const { username, password, email, handleChange, rstPassword, isSignedIn } = this.props
+        const { firstname, lastname, username, password, email, handleChange, rstPassword, isSignedIn } = this.props
         return (
             <div>
                 <div id='create_account_form'>
+                <h1> Create Account </h1>
                     <form onSubmit={this.props.createAccount}>
-                        <input className='signupemail' name='email' type='email' placeholder='email' value={email} onChange={handleChange} /><br />
-                        <input className='signupusername' name='username' type='text' placeholder='username' value={username} onChange={handleChange} /> <br />
-                        <input className='signuppassword' name='password' type='password' placeholder='password' value={password} onChange={handleChange} /> <br />
-                        <input className='signuprptPassword' name='rstPassword' type='password' placeholder='repeat password' value={rstPassword} onChange={handleChange} /><br />
+                        <input className='firstname' name='firstname' type='text' placeholder='Firstname' value={firstname} onChange={handleChange} /><br />
+                        <input className='lastname' name='lastname' type='text' placeholder='Lastname' value={lastname} onChange={handleChange} /><br />
+                        <input className='signupemail' name='email' type='email' placeholder='Email' value={email} onChange={handleChange} /><br />
+                        <input className='signupusername' name='username' type='text' placeholder='Username' value={username} onChange={handleChange} /> <br />
+                        <input className='signuppassword' name='password' type='password' placeholder='Password' value={password} onChange={handleChange} /> <br />
+                        <input className='signuprstPassword' name='rstPassword' type='password' placeholder='Repeat password' value={rstPassword} onChange={handleChange} /><br />
                         <p>By creating an account you agree to our <a href='#'>Terms & Privacy</a>.</p>
                         <button type='button' className='cancelbtn' onClick={this.props.cancel}> Cancel </button>
                         <button type='submit' className='signupbtn'> Create account</button>

@@ -38,7 +38,9 @@ class App extends Component {
       username: '',
       password: '',
       rstPassword: '',
-      email: ''
+      email: '',
+      firstname: '',
+      lastname: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
@@ -79,19 +81,23 @@ class App extends Component {
 
   createAccount(e) {
     e.preventDefault()
-    const { email, username, password, rstPassword } = this.state
+    const { email, username, password, rstPassword, firstname, lastname } = this.state
     const successUsername = this.state.username
-    if (username && password && email && rstPassword) {
+    if (firstname && lastname && username && password && email && rstPassword) {
       axios.post('/signup', {
         email,
         username,
-        password
+        password,
+        firstname,
+        lastname
       })
         .then(() => {
           this.setState({
             isSignedIn: true,
             isLoggedIn: successUsername,
             username: '',
+            firstname:'',
+            lastname: '',
             password: '',
             rstPassword: '',
             email: ''
@@ -105,7 +111,7 @@ class App extends Component {
 
 
   cancel() {
-    this.setState({ email: '', username: '', password: '', rstPassword: '' })
+    this.setState({ email: '', username: '', password: '', rstPassword: '', firstname:'', lastname: '' })
   }
 
   render() {
@@ -138,6 +144,8 @@ class App extends Component {
         <Route exact path='/signup'
           render={(props) => <SignUp {...props}
             isSignedIn={this.state.isSignedIn}
+            firstname={this.state.firstname}
+            lastname={this.state.lastname}
             email={this.state.email}
             username={this.state.username}
             password={this.state.password}
