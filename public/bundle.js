@@ -24739,7 +24739,9 @@ var App = function (_Component) {
       username: '',
       password: '',
       rstPassword: '',
-      email: ''
+      email: '',
+      firstname: '',
+      lastname: ''
     };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.logout = _this.logout.bind(_this);
@@ -24795,19 +24797,25 @@ var App = function (_Component) {
           email = _state2.email,
           username = _state2.username,
           password = _state2.password,
-          rstPassword = _state2.rstPassword;
+          rstPassword = _state2.rstPassword,
+          firstname = _state2.firstname,
+          lastname = _state2.lastname;
 
       var successUsername = this.state.username;
-      if (username && password && email && rstPassword) {
+      if (firstname && lastname && username && password && email && rstPassword) {
         _axios2.default.post('/signup', {
           email: email,
           username: username,
-          password: password
+          password: password,
+          firstname: firstname,
+          lastname: lastname
         }).then(function () {
           _this3.setState({
             isSignedIn: true,
             isLoggedIn: successUsername,
             username: '',
+            firstname: '',
+            lastname: '',
             password: '',
             rstPassword: '',
             email: ''
@@ -24820,7 +24828,7 @@ var App = function (_Component) {
   }, {
     key: 'cancel',
     value: function cancel() {
-      this.setState({ email: '', username: '', password: '', rstPassword: '' });
+      this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' });
     }
   }, {
     key: 'render',
@@ -24864,6 +24872,8 @@ var App = function (_Component) {
           render: function render(props) {
             return _react2.default.createElement(_SignUp2.default, _extends({}, props, {
               isSignedIn: _this4.state.isSignedIn,
+              firstname: _this4.state.firstname,
+              lastname: _this4.state.lastname,
               email: _this4.state.email,
               username: _this4.state.username,
               password: _this4.state.password,
@@ -25535,6 +25545,8 @@ var SignUp = function (_Component) {
         key: 'render',
         value: function render() {
             var _props = this.props,
+                firstname = _props.firstname,
+                lastname = _props.lastname,
                 username = _props.username,
                 password = _props.password,
                 email = _props.email,
@@ -25549,17 +25561,26 @@ var SignUp = function (_Component) {
                     'div',
                     { id: 'create_account_form' },
                     _react2.default.createElement(
+                        'h1',
+                        null,
+                        ' Create Account '
+                    ),
+                    _react2.default.createElement(
                         'form',
                         { onSubmit: this.props.createAccount },
-                        _react2.default.createElement('input', { className: 'signupemail', name: 'email', type: 'email', placeholder: 'email', value: email, onChange: handleChange }),
+                        _react2.default.createElement('input', { className: 'firstname', name: 'firstname', type: 'text', placeholder: 'Firstname', value: firstname, onChange: handleChange }),
                         _react2.default.createElement('br', null),
-                        _react2.default.createElement('input', { className: 'signupusername', name: 'username', type: 'text', placeholder: 'username', value: username, onChange: handleChange }),
+                        _react2.default.createElement('input', { className: 'lastname', name: 'lastname', type: 'text', placeholder: 'Lastname', value: lastname, onChange: handleChange }),
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement('input', { className: 'signupemail', name: 'email', type: 'email', placeholder: 'Email', value: email, onChange: handleChange }),
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement('input', { className: 'signupusername', name: 'username', type: 'text', placeholder: 'Username', value: username, onChange: handleChange }),
                         ' ',
                         _react2.default.createElement('br', null),
-                        _react2.default.createElement('input', { className: 'signuppassword', name: 'password', type: 'password', placeholder: 'password', value: password, onChange: handleChange }),
+                        _react2.default.createElement('input', { className: 'signuppassword', name: 'password', type: 'password', placeholder: 'Password', value: password, onChange: handleChange }),
                         ' ',
                         _react2.default.createElement('br', null),
-                        _react2.default.createElement('input', { className: 'signuprptPassword', name: 'rstPassword', type: 'password', placeholder: 'repeat password', value: rstPassword, onChange: handleChange }),
+                        _react2.default.createElement('input', { className: 'signuprstPassword', name: 'rstPassword', type: 'password', placeholder: 'Repeat password', value: rstPassword, onChange: handleChange }),
                         _react2.default.createElement('br', null),
                         _react2.default.createElement(
                             'p',
@@ -25677,7 +25698,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".signupemail,.signupusername,.signuppassword,.signuprptPassword {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n}\n\n.signupbtn {\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n.cancelbtn {\n    padding: 14px 20px;\n    background-color: #f44336;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    color:white;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n\n#create_account_form {\n    width: 500px;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n\n/* Change styles for cancel button and signup button on extra small screens */\n@media screen and (max-width: 300px) {\n    .cancelbtn, .signupbtn {\n        width: 100%;\n    }\n}", ""]);
+exports.push([module.i, ".firstname,.lastname,.signupemail,.signupusername,.signuppassword,.signuprstPassword {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n}\n\n.signupbtn {\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n.cancelbtn {\n    padding: 14px 20px;\n    background-color: #f44336;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    color:white;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n\n#create_account_form {\n    width: 500px;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n\n/* Change styles for cancel button and signup button on extra small screens */\n@media screen and (max-width: 300px) {\n    .cancelbtn, .signupbtn {\n        width: 100%;\n    }\n}", ""]);
 
 // exports
 
