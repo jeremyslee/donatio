@@ -5,15 +5,15 @@ import TransactionConfirmation from './TransactionConfirmation.jsx'
 class PurchaseContainer extends Component {
   render() {
     const itemsInCart = this.props.addedToCart
+    const donationId = false
     return (
       <div>
         {
-          itemsInCart.length > 0 ?
-          <ShoppingCart addedToCart={itemsInCart} />
+          donationId ?
+          <TransactionConfirmation />
           :
-          'Your cart is empty'
+          <ShoppingCart addedToCart={itemsInCart} />
         }
-        <TransactionConfirmation />
       </div>
     );
   };
