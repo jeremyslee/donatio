@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userController = require('./controllers/userController');
+const charityController = require('./controllers/charityController');
 const logger = require('morgan');
 const scrapeController = require('./scraper');
 
@@ -27,7 +28,7 @@ app.post('/login', userController.postLogin)
 
 app.post('/signup', userController.createUser)
 
-// app.get('/getCharityInfo', eventController.getCharityInfo);
+app.get('/getCharityInfo', charityController.getCharityInfo)
 
 app.get('/crawler', scrapeController.scrapeCharity)
 

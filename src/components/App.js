@@ -15,12 +15,13 @@ class App extends Component {
     this.state = {
       charityList: [
         {
+          charity_id: null,
           organization: '',
           title: '',
           image: '',
           summary: '',
           category: '',
-          country: '',
+          country: ''
         }
       ],
       isLoggedIn: undefined,
@@ -45,7 +46,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('/crawler')
+    axios.get('/getCharityInfo')
     .then((response) => {
       this.setState({charityList: response.data})
     })
