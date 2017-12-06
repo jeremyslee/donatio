@@ -24717,19 +24717,12 @@ var App = function (_Component) {
 
     _this.state = {
       charityList: [{
-        organization: 'Women for Women',
-        title: 'Education material for poor school children',
-        image: 'https://www.globalgiving.org/pfil/31262/pict_large.jpg',
-        summary: 'Ammapalayam, Panchayat Union middle school in Arni Block, Thriuvannamalai district. 210 poor children studying in our school. Quality educa…',
-        category: 'Education',
-        country: 'India'
-      }, {
-        organization: 'Community Health, Housing, and Social Education',
-        title: 'Support negelected elders with food, medicine, and clothing',
-        image: 'https://www.globalgiving.org/pfil/31247/pict_original.jpg',
-        summary: 'The less privileged elders need food, love and care. This project will provide meals to 57 homeless old age persons. Every day we provide nu…',
-        category: 'Hunger',
-        country: 'India'
+        organization: '',
+        title: '',
+        image: '',
+        summary: '',
+        category: '',
+        country: ''
       }],
       isLoggedIn: undefined,
       isLoggedInPage: null,
@@ -24752,6 +24745,17 @@ var App = function (_Component) {
   }
 
   _createClass(App, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      _axios2.default.get('/crawler').then(function (response) {
+        _this2.setState({ charityList: response.data });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(e) {
       this.setState(_defineProperty({}, e.target.name, e.target.value));
@@ -24759,38 +24763,34 @@ var App = function (_Component) {
   }, {
     key: 'login',
     value: function login(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       var _state = this.state,
           usernameLogin = _state.usernameLogin,
           passwordLogin = _state.passwordLogin;
 
-      console.log('i click here');
       var successUsername = this.state.usernameLogin;
       if (usernameLogin && passwordLogin) {
-        console.log('1');
         _axios2.default.post('/login', {
           usernameLogin: usernameLogin,
           passwordLogin: passwordLogin
         }).then(function () {
-          console.log('2');
-          _this2.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' });
+          _this3.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' });
         }).catch(function () {
-          console.log('3');
-          _this2.setState({ isLoggedInPage: false });
+          _this3.setState({ isLoggedInPage: false });
         });
       }
     }
   }, {
     key: 'logout',
     value: function logout() {
-      this.setState({ isLoggedIn: false, isSignedIn: false, isLoggedInPage: false });
+      this.setState({ isLoggedIn: false, isSignedIn: false });
     }
   }, {
     key: 'createAccount',
     value: function createAccount(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       e.preventDefault();
       var _state2 = this.state,
@@ -24810,7 +24810,7 @@ var App = function (_Component) {
           firstname: firstname,
           lastname: lastname
         }).then(function () {
-          _this3.setState({
+          _this4.setState({
             isSignedIn: true,
             isLoggedIn: successUsername,
             username: '',
@@ -24821,7 +24821,7 @@ var App = function (_Component) {
             email: ''
           });
         }).catch(function () {
-          _this3.setState({ isSignedIn: false });
+          _this4.setState({ isSignedIn: false });
         });
       }
     }
@@ -24833,7 +24833,7 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return _react2.default.createElement(
         'div',
@@ -24841,46 +24841,46 @@ var App = function (_Component) {
         _react2.default.createElement(_reactRouterDom.Route, { path: '/',
           render: function render(props) {
             return _react2.default.createElement(_Navigation2.default, _extends({}, props, {
-              isLoggedIn: _this4.state.isLoggedIn,
-              usernameLogin: _this4.state.usernameLogin,
-              isSignedIn: _this4.state.isSignedIn,
-              username: _this4.state.username
+              isLoggedIn: _this5.state.isLoggedIn,
+              usernameLogin: _this5.state.usernameLogin,
+              isSignedIn: _this5.state.isSignedIn,
+              username: _this5.state.username
             }));
           }
         }),
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/',
           render: function render(props) {
             return _react2.default.createElement(_CharityList2.default, _extends({}, props, {
-              charityList: _this4.state.charityList
+              charityList: _this5.state.charityList
             }));
           }
         }),
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/login',
           render: function render(props) {
             return _react2.default.createElement(_LoginContainer2.default, _extends({}, props, {
-              isLoggedIn: _this4.state.isLoggedIn,
-              isLoggedInPage: _this4.state.isLoggedInPage,
-              usernameLogin: _this4.state.usernameLogin,
-              passwordLogin: _this4.state.passwordLogin,
-              handleChange: _this4.handleChange,
-              login: _this4.login,
-              logout: _this4.logout
+              isLoggedIn: _this5.state.isLoggedIn,
+              isLoggedInPage: _this5.state.isLoggedInPage,
+              usernameLogin: _this5.state.usernameLogin,
+              passwordLogin: _this5.state.passwordLogin,
+              handleChange: _this5.handleChange,
+              login: _this5.login,
+              logout: _this5.logout
             }));
           }
         }),
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/signup',
           render: function render(props) {
             return _react2.default.createElement(_SignUp2.default, _extends({}, props, {
-              isSignedIn: _this4.state.isSignedIn,
-              firstname: _this4.state.firstname,
-              lastname: _this4.state.lastname,
-              email: _this4.state.email,
-              username: _this4.state.username,
-              password: _this4.state.password,
-              rstPassword: _this4.state.rstPassword,
-              handleChange: _this4.handleChange,
-              createAccount: _this4.createAccount,
-              cancel: _this4.cancel
+              isSignedIn: _this5.state.isSignedIn,
+              firstname: _this5.state.firstname,
+              lastname: _this5.state.lastname,
+              email: _this5.state.email,
+              username: _this5.state.username,
+              password: _this5.state.password,
+              rstPassword: _this5.state.rstPassword,
+              handleChange: _this5.handleChange,
+              createAccount: _this5.createAccount,
+              cancel: _this5.cancel
             }));
           }
         }),
@@ -25044,6 +25044,7 @@ var LoginContainer = function (_Component) {
           usernameLogin: this.props.usernameLogin,
           passwordLogin: this.props.passwordLogin,
           handleChange: this.props.handleChange,
+          isLoggedInPage: this.props.isLoggedInPage,
           login: this.props.login
         })
       );
@@ -25139,6 +25140,8 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(13);
 
+__webpack_require__(123);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25146,8 +25149,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import SignUp from './SignUp.js';
 
 var LogIn = function (_Component) {
   _inherits(LogIn, _Component);
@@ -25163,30 +25164,48 @@ var LogIn = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
-        'Please Login In',
+        { id: 'login_form' },
+        _react2.default.createElement(
+          'h1',
+          null,
+          ' Login '
+        ),
         _react2.default.createElement(
           'form',
           { onSubmit: this.props.login },
-          _react2.default.createElement('input', { type: 'text', name: 'usernameLogin', value: this.props.usernameLogin, placeholder: 'username', onChange: this.props.handleChange }),
-          _react2.default.createElement('input', { type: 'password', name: 'passwordLogin', value: this.props.passwordLogin, placeholder: 'password', onChange: this.props.handleChange }),
+          _react2.default.createElement('input', { className: 'userLog', type: 'text', name: 'usernameLogin', value: this.props.usernameLogin, placeholder: 'username', onChange: this.props.handleChange }),
+          ' ',
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('input', { className: 'passLog', type: 'password', name: 'passwordLogin', value: this.props.passwordLogin, placeholder: 'password', onChange: this.props.handleChange }),
+          ' ',
+          _react2.default.createElement('br', null),
           _react2.default.createElement(
             'button',
-            { type: 'submit' },
-            'login'
-          )
+            { className: 'logBtn', type: 'submit' },
+            'Login'
+          ),
+          ' ',
+          _react2.default.createElement('br', null)
         ),
         this.props.isLoggedInPage === false && _react2.default.createElement(
           'p',
-          null,
+          { className: 'alert' },
           'Username and password combination is invalid'
         ),
-        'Don\'t have an account? ',
-        _react2.default.createElement('br', null),
         _react2.default.createElement(
-          _reactRouterDom.Link,
-          { to: '/signup' },
-          'Sign up HERE'
+          'div',
+          { className: 'noAcc' },
+          'Don\'t have an account? ',
+          _react2.default.createElement('br', null),
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: '/signup', style: { textDecoration: 'none' } },
+            _react2.default.createElement(
+              'button',
+              { className: 'signBtn' },
+              'Sign up'
+            )
+          )
         )
       );
     }
@@ -25698,7 +25717,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".firstname,.lastname,.signupemail,.signupusername,.signuppassword,.signuprstPassword {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n}\n\n.signupbtn {\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n.cancelbtn {\n    padding: 14px 20px;\n    background-color: #f44336;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    color:white;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n\n#create_account_form {\n    width: 500px;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n\n/* Change styles for cancel button and signup button on extra small screens */\n@media screen and (max-width: 300px) {\n    .cancelbtn, .signupbtn {\n        width: 100%;\n    }\n}", ""]);
+exports.push([module.i, ".firstname,.lastname,.signupemail,.signupusername,.signuppassword,.signuprstPassword {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n}\n\n.signupbtn {\n    background-color: #4ECDC4;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n.cancelbtn {\n    padding: 14px 20px;\n    background-color: #CF000F;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    cursor: pointer;\n    color:white;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n\n#create_account_form {\n    width: 500px;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n    text-align: center;\n}\n\n\n/* Change styles for cancel button and signup button on extra small screens */\n@media screen and (max-width: 300px) {\n    .cancelbtn, .signupbtn {\n        width: 100%;\n    }\n}", ""]);
 
 // exports
 
@@ -26591,6 +26610,51 @@ module.exports = function spread(callback) {
     return callback.apply(null, arr);
   };
 };
+
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(124);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(25)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./LogIn.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./LogIn.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(24)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.userLog,.passLog {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n}\n\n.logBtn {\n    background-color: #4ECDC4;\n    color: white;\n    padding: 14px 20px;\n    display: block;\n    margin: 0 auto;\n    border: none;\n    cursor: pointer;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n#login_form {\n    width: 500px;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n    text-align: center;\n}\n\n.alert {\n    color: red;\n}\n\n.noAcc {\n    display: block;\n    margin: 0 auto;\n    text-align: center;\n}\n.signBtn {\n    background-color: #4ECDC4;\n    color: white;\n    padding: 14px 20px;\n    display: block;\n    margin: 0 auto;\n    border: none;\n    cursor: pointer;\n    font-size: 25px;\n    font-weight: bold;\n    width:50%\n}\n\n@media screen and (max-width: 300px) {\n    .logBtn {\n        width: 100%;\n    }\n}", ""]);
+
+// exports
 
 
 /***/ })
