@@ -24734,13 +24734,14 @@ var App = function (_Component) {
       isLoggedIn: undefined,
       isLoggedInPage: null,
       isSignedIn: null,
+      usernameLogin: '',
+      passwordLogin: '',
       username: '',
       password: '',
-      rptPassword: '',
+      rstPassword: '',
       email: ''
     };
     _this.handleChange = _this.handleChange.bind(_this);
-    _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.logout = _this.logout.bind(_this);
     _this.login = _this.login.bind(_this);
     _this.createAccount = _this.createAccount.bind(_this);
@@ -24754,37 +24755,27 @@ var App = function (_Component) {
       this.setState(_defineProperty({}, e.target.name, e.target.value));
     }
   }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(e) {
-      e.preventDefault();
-      var username = this.state.username;
-      this.setState({
-        isLoggedIn: username,
-        isLoggedInPage: true,
-        isSignedIn: true,
-        username: '',
-        password: '',
-        rptPassword: '',
-        email: ''
-      });
-    }
-  }, {
     key: 'login',
     value: function login(e) {
       var _this2 = this;
 
       e.preventDefault();
       var _state = this.state,
-          username = _state.username,
-          password = _state.password;
+          usernameLogin = _state.usernameLogin,
+          passwordLogin = _state.passwordLogin;
 
-      if (username && password) {
+      console.log('i click here');
+      var successUsername = this.state.usernameLogin;
+      if (usernameLogin && passwordLogin) {
+        console.log('1');
         _axios2.default.post('/login', {
-          username: username,
-          password: password
+          usernameLogin: usernameLogin,
+          passwordLogin: passwordLogin
         }).then(function () {
-          _this2.setState({ isLoggedInPage: true });
+          console.log('2');
+          _this2.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' });
         }).catch(function () {
+          console.log('3');
           _this2.setState({ isLoggedInPage: false });
         });
       }
@@ -24804,15 +24795,16 @@ var App = function (_Component) {
           email = _state2.email,
           username = _state2.username,
           password = _state2.password,
-          rptPassword = _state2.rptPassword;
+          rstPassword = _state2.rstPassword;
 
-      if (username && password && email && rptPassword) {
+      var successUsername = this.state.username;
+      if (username && password && email && rstPassword) {
         _axios2.default.post('/signup', {
           email: email,
           username: username,
           password: password
         }).then(function () {
-          _this3.setState({ isSignedIn: true });
+          _this3.setState({ isSignedIn: true, isLoggedIn: successUsername });
         }).catch(function () {
           _this3.setState({ isSignedIn: false });
         });
@@ -24821,7 +24813,6 @@ var App = function (_Component) {
   }, {
     key: 'cancel',
     value: function cancel() {
-      console.log('you clicked cancel');
       this.setState({ email: '', username: '', password: '', rstPassword: '' });
     }
   }, {
@@ -24836,6 +24827,8 @@ var App = function (_Component) {
           render: function render(props) {
             return _react2.default.createElement(_Navigation2.default, _extends({}, props, {
               isLoggedIn: _this4.state.isLoggedIn,
+              usernameLogin: _this4.state.usernameLogin,
+              isSignedIn: _this4.state.isSignedIn,
               username: _this4.state.username
             }));
           }
@@ -24852,10 +24845,9 @@ var App = function (_Component) {
             return _react2.default.createElement(_LoginContainer2.default, _extends({}, props, {
               isLoggedIn: _this4.state.isLoggedIn,
               isLoggedInPage: _this4.state.isLoggedInPage,
-              username: _this4.state.username,
-              password: _this4.state.password,
+              usernameLogin: _this4.state.usernameLogin,
+              passwordLogin: _this4.state.passwordLogin,
               handleChange: _this4.handleChange,
-              handleSubmit: _this4.handleSubmit,
               login: _this4.login,
               logout: _this4.logout
             }));
@@ -24868,9 +24860,8 @@ var App = function (_Component) {
               email: _this4.state.email,
               username: _this4.state.username,
               password: _this4.state.password,
-              rptPassword: _this4.state.rptPassword,
+              rstPassword: _this4.state.rstPassword,
               handleChange: _this4.handleChange,
-              handleSubmit: _this4.handleSubmit,
               createAccount: _this4.createAccount,
               cancel: _this4.cancel
             }));
@@ -24960,7 +24951,7 @@ var Navigation = function (_Component) {
             _react2.default.createElement(
               _reactRouterDom.Link,
               { to: '/login' },
-              this.props.isLoggedIn ? 'Hello ' + this.props.isLoggedIn + '!' : 'login'
+              this.props.isLoggedIn || this.props.isSignedIn ? 'Hello ' + this.props.isLoggedIn + '!' : 'login'
             )
           ),
           _react2.default.createElement(
@@ -25033,10 +25024,10 @@ var LoginContainer = function (_Component) {
         this.props.isLoggedIn ? _react2.default.createElement(_AccountDetail2.default, {
           logout: this.props.logout
         }) : _react2.default.createElement(_LogIn2.default, {
-          username: this.props.username,
-          password: this.props.password,
+          usernameLogin: this.props.usernameLogin,
+          passwordLogin: this.props.passwordLogin,
           handleChange: this.props.handleChange,
-          handleSubmit: this.props.handleSubmit
+          login: this.props.login
         })
       );
     }
@@ -25159,14 +25150,19 @@ var LogIn = function (_Component) {
         'Please Login In',
         _react2.default.createElement(
           'form',
-          { onSubmit: this.props.handleSubmit },
-          _react2.default.createElement('input', { type: 'text', name: 'username', value: this.props.username, placeholder: 'username', onChange: this.props.handleChange }),
-          _react2.default.createElement('input', { type: 'password', name: 'password', value: this.props.password, placeholder: 'password', onChange: this.props.handleChange }),
+          { onSubmit: this.props.login },
+          _react2.default.createElement('input', { type: 'text', name: 'usernameLogin', value: this.props.usernameLogin, placeholder: 'username', onChange: this.props.handleChange }),
+          _react2.default.createElement('input', { type: 'password', name: 'passwordLogin', value: this.props.passwordLogin, placeholder: 'password', onChange: this.props.handleChange }),
           _react2.default.createElement(
             'button',
-            { type: 'submit', onClick: this.props.login },
+            { type: 'submit' },
             'login'
           )
+        ),
+        this.props.isLoggedInPage === false && _react2.default.createElement(
+          'p',
+          null,
+          'Username and password combination is invalid'
         ),
         'Don\'t have an account? ',
         _react2.default.createElement('br', null),
@@ -25535,11 +25531,8 @@ var SignUp = function (_Component) {
                 username = _props.username,
                 password = _props.password,
                 email = _props.email,
-                handleSubmit = _props.handleSubmit,
                 handleChange = _props.handleChange,
-                createAccount = _props.createAccount,
-                rptPassword = _props.rptPassword,
-                cancel = _props.cancel,
+                rstPassword = _props.rstPassword,
                 isSignedIn = _props.isSignedIn;
 
             return _react2.default.createElement(
@@ -25550,7 +25543,7 @@ var SignUp = function (_Component) {
                     { id: 'create_account_form' },
                     _react2.default.createElement(
                         'form',
-                        { onSubmit: handleSubmit },
+                        { onSubmit: this.props.createAccount },
                         _react2.default.createElement('input', { className: 'signupemail', name: 'email', type: 'email', placeholder: 'email', value: email, onChange: handleChange }),
                         _react2.default.createElement('br', null),
                         _react2.default.createElement('input', { className: 'signupusername', name: 'username', type: 'text', placeholder: 'username', value: username, onChange: handleChange }),
@@ -25559,7 +25552,7 @@ var SignUp = function (_Component) {
                         _react2.default.createElement('input', { className: 'signuppassword', name: 'password', type: 'password', placeholder: 'password', value: password, onChange: handleChange }),
                         ' ',
                         _react2.default.createElement('br', null),
-                        _react2.default.createElement('input', { className: 'signuprptPassword', name: 'rptPassword', type: 'password', placeholder: 'repeat password', value: rptPassword, onChange: handleChange }),
+                        _react2.default.createElement('input', { className: 'signuprptPassword', name: 'rstPassword', type: 'password', placeholder: 'repeat password', value: rstPassword, onChange: handleChange }),
                         _react2.default.createElement('br', null),
                         _react2.default.createElement(
                             'p',
@@ -25574,13 +25567,13 @@ var SignUp = function (_Component) {
                         ),
                         _react2.default.createElement(
                             'button',
-                            { type: 'button', className: 'cancelbtn', onClick: this.cancel },
+                            { type: 'button', className: 'cancelbtn', onClick: this.props.cancel },
                             ' Cancel '
                         ),
                         _react2.default.createElement(
                             'button',
-                            { type: 'submit', className: 'signupbtn', onClick: this.createAccount },
-                            'Create account'
+                            { type: 'submit', className: 'signupbtn' },
+                            ' Create account'
                         )
                     ),
                     isSignedIn === true && _react2.default.createElement(_reactRouter.Redirect, { to: '/' })

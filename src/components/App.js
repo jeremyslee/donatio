@@ -33,13 +33,14 @@ class App extends Component {
       isLoggedIn: undefined,
       isLoggedInPage: null,
       isSignedIn: null,
+      usernameLogin: '',
+      passwordLogin: '',
       username: '',
       password: '',
-      rptPassword: '',
+      rstPassword: '',
       email: ''
     }
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
     this.logout = this.logout.bind(this)
     this.login = this.login.bind(this)
     this.createAccount = this.createAccount.bind(this)
@@ -50,32 +51,23 @@ class App extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  handleSubmit(e) {
-    e.preventDefault()
-    const username = this.state.username
-    this.setState({
-      isLoggedIn: username,
-      isLoggedInPage:true,
-      isSignedIn: true,
-      username: '',
-      password: '',
-      rptPassword: '',
-      email: ''
-    })
-  }
-
   login(e) {
     e.preventDefault()
-    const { username, password } = this.state
-    if (username && password) {
+    const { usernameLogin, passwordLogin } = this.state
+    console.log('i click here')
+    const successUsername = this.state.usernameLogin
+    if (usernameLogin  && passwordLogin) {
+      console.log('1')
       axios.post('/login', {
-        username,
-        password
+        usernameLogin,
+        passwordLogin
       })
         .then(() => {
-          this.setState({ isLoggedInPage: true })
+          console.log('2')
+          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: ''})
         })
         .catch(() => {
+          console.log('3')
           this.setState({ isLoggedInPage: false })
         });
     }
@@ -87,15 +79,16 @@ class App extends Component {
 
   createAccount(e) {
     e.preventDefault()
-    const { email, username, password, rptPassword } = this.state
-    if (username && password && email && rptPassword) {
+    const { email, username, password, rstPassword } = this.state
+    const successUsername = this.state.username
+    if (username && password  && email  && rstPassword) {
       axios.post('/signup', {
         email,
         username,
         password
       })
         .then(() => {
-          this.setState({ isSignedIn: true })
+          this.setState({ isSignedIn: true, isLoggedIn: successUsername })
         })
         .catch(() => {
           this.setState({ isSignedIn: false })
@@ -105,7 +98,6 @@ class App extends Component {
 
 
   cancel() {
-    console.log('you clicked cancel')
     this.setState({ email: '', username: '', password: '', rstPassword: ''})
   }
 
@@ -115,6 +107,8 @@ class App extends Component {
         <Route path='/'
           render={(props) => <Navigation {...props}
             isLoggedIn={this.state.isLoggedIn}
+            usernameLogin={this.state.usernameLogin}
+            isSignedIn={this.state.isSignedIn}
             username={this.state.username}
           />}
         />
@@ -127,10 +121,9 @@ class App extends Component {
           render={(props) => <LoginContainer {...props}
             isLoggedIn={this.state.isLoggedIn}
             isLoggedInPage={this.state.isLoggedInPage}
-            username={this.state.username}
-            password={this.state.password}
+            usernameLogin={this.state.usernameLogin}
+            passwordLogin={this.state.passwordLogin}
             handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
             login={this.login}
             logout={this.logout}
           />}
@@ -141,9 +134,8 @@ class App extends Component {
             email={this.state.email}
             username={this.state.username}
             password={this.state.password}
-            rptPassword={this.state.rptPassword}
+            rstPassword={this.state.rstPassword}
             handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
             createAccount={this.createAccount}
             cancel={this.cancel}
           />}

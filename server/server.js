@@ -27,10 +27,12 @@ app.post('/createUser', eventController.createUser);
 
 app.post('/login', (req, res) => {
   console.log('user is logged in')
+  res.status(200).send('OK')
 })
 
 app.post('/signup', (req, res) => {
   console.log('sign up')
+  res.status(200).send('OK')
 })
 
 app.get('/getCharityInfo', eventController.getCharityInfo);

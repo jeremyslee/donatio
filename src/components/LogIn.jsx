@@ -8,11 +8,12 @@ class LogIn extends Component {
     return (
       <div>
         Please Login In
-        <form onSubmit={this.props.handleSubmit}>
-          <input type='text' name='username' value={this.props.username} placeholder='username' onChange={this.props.handleChange} />
-          <input type='password' name='password' value={this.props.password} placeholder='password' onChange={this.props.handleChange} />
-          <button type='submit' onClick={this.props.login} >login</button>
+        <form onSubmit={this.props.login}>
+          <input type='text' name='usernameLogin' value={this.props.usernameLogin} placeholder='username' onChange={this.props.handleChange} />
+          <input type='password' name='passwordLogin' value={this.props.passwordLogin} placeholder='password' onChange={this.props.handleChange} />
+          <button type='submit'>login</button>
         </form>
+        {(this.props.isLoggedInPage === false) && <p>Username and password combination is invalid</p>}
         Don't have an account? <br/>
         <Link to='/signup'>Sign up HERE</Link>
       </div>

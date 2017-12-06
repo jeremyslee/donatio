@@ -12,10 +12,10 @@ class LoginContainer extends Component {
             logout={this.props.logout}
           /> :
           <LogIn
-            username={this.props.username}
-            password={this.props.password}
+            usernameLogin={this.props.usernameLogin}
+            passwordLogin={this.props.passwordLogin}
             handleChange={this.props.handleChange}
-            handleSubmit={this.props.handleSubmit}
+            login={this.props.login}
           />}
       </div>
     );
