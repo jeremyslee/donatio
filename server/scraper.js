@@ -3,7 +3,7 @@ const request = require('request');
 
 const scrapeController = {
     scrapeCharity: (req, res, next) => {
-        request('https://www.globalgiving.org/search/?size=50&sortField=approveddt_orig', (error, response, html) => {
+        request('https://www.globalgiving.org/search/?size=50&sortField=percent_funded', (error, response, html) => {
             let $ = cheerio.load(html);
          
             let data = $('.grid-12.grid-md-6.grid-lg-12.box_topMargin4.box_md_horizontalPadded1.box_lg_horizontalPadded0.grid-parent.flex_growChildren').map((i,el)=>{
