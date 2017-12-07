@@ -25,7 +25,6 @@ class App extends Component {
         }
       ],
       itemsToShow: 5,
-      expanded: false,
       isLoggedIn: undefined,
       isLoggedInPage: null,
       isSignedIn: null,
@@ -89,11 +88,7 @@ class App extends Component {
   }
 
   showMore() {
-    (this.state.itemsToShow === 5) ?
-    this.setState({ itemsToShow: this.state.charityList.length, expanded: true})
-    : 
-    this.setState({ itemsToShow: 5, expanded: false})
-
+    this.setState({ itemsToShow: this.state.itemsToShow + 5 })
   }
 
   handleChange(e) {
@@ -237,11 +232,11 @@ class App extends Component {
   }
 
   handleChangeCountry(selectedOption) {
-    this.setState({ selectedCountry: selectedOption.value })
+    this.setState({ selectedCountry: selectedOption ? selectedOption.value : null })
   }
 
   handleChangeCategory(selectedOption) {
-    this.setState({ selectedCategory: selectedOption.value });
+    this.setState({ selectedCategory: selectedOption ? selectedOption.value : null });
   }
 
 
@@ -269,6 +264,7 @@ class App extends Component {
             countries={this.state.countries}
             categories={this.state.categories}
             addToCart={this.addToCart}
+            itemsToShow={this.state.itemsToShow}
           />}
         />
         <Route exact path='/login'

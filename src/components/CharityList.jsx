@@ -8,6 +8,7 @@ class CharityList extends Component {
   render() {
     const list = this.props.charityList
     .filter(c => !this.props.selectedCountry && !this.props.selectedCategory || c.country === this.props.selectedCountry || c.category === this.props.selectedCategory)
+    .filter((c, i) => i < this.props.itemsToShow)
     .map(
       (charity, index) => {
         return <Charity
@@ -45,8 +46,8 @@ class CharityList extends Component {
           )}
         />
         </div>
-        <button className='showMore' type='button' onClick={this.props.showMore}>Show more</button>
         {list}
+        <button className='showMore' type='button' onClick={this.props.showMore}>Show more</button>
       </div>
     
     );
