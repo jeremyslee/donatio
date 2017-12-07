@@ -30,6 +30,8 @@ app.post('/signup', userController.createUser)
 
 app.get('/getCharityInfo', charityController.getCharityInfo)
 
+app.post('/processPurchase', charityController.processPurchase)
+
 app.post('/purchaseHistory', charityController.getPurchaseHistory)
 
 app.get('/crawler', scrapeController.scrapeCharity)

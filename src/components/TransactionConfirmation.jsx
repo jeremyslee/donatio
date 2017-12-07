@@ -4,7 +4,7 @@ class TransactionConfirmation extends Component {
   render() {
     return (
       <div>
-        Your transaction was successful.
+        Thank you for your donation. Your confirmation number is {this.props.transactionNumber}.
       </div>
     );
   };
