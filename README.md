@@ -18,13 +18,15 @@ Initial required package build.
 ```
 npm install
 ```
+```
 npm run build 
 ```
-in new terminal window - npm start
+in new terminal window
+```
+npm start
 ```
 ​
 ## Built With
-​
 - React
 - PosgreSQL
 - Node (Express)
