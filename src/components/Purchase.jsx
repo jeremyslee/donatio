@@ -5,7 +5,7 @@ class Purchase extends Component {
     const { donationId, amount } = this.props
     return (
       <div>
-        <p>Transaction number: {donationId}</p>
+        <p>Confirmation number: {donationId}</p>
         <p>Total donation: ${amount}.00</p>
       </div>
     );

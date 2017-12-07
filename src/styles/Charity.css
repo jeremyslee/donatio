@@ -1,0 +1,25 @@
+.charity-item {
+  margin: 40px 100px 40px 100px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
+}
+
+.imageContainer {
+  display: inline-block;
+}
+
+.charity-img {
+  width: 250px;
+  height: 150px;
+}
+
+.chairty-text {
+  display: inline-block;
+  padding: 0px 0px 0px 5px;
+}
+
+.add-to-cart-button {
+  padding: 2px;
+  margin: 0 0 5px 10px;
+}

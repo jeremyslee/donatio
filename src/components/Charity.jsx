@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
-import '../styles/App.css';
+import '../styles/Charity.css';
 
-class CharityList extends Component {
+class Charity extends Component {
   render() {
+    const {
+      image,
+      category,
+      country,
+      title,
+      organization,
+      summary
+    } = this.props.charity
     return (
       <div className='charity-item'>
-        <div>
-          <img className='charity-img' alt='photograph' src={this.props.charity.image} />
+        <div className='image-container'>
+          <img className='charity-img' alt='photograph' src={image} />
         </div>
         <div className='charity-text'>
-        <h3>{this.props.charity.category.toUpperCase()} | {this.props.charity.country.toUpperCase()}</h3>
-        <h4>Title: {this.props.charity.title}</h4>
-        <p>By: {this.props.charity.organization}</p>
-        <p>Summary: {this.props.charity.summary}</p>
+        <h3>{category.toUpperCase()} | {country.toUpperCase()}</h3>
+        <h4>Title: {title}</h4>
+        <p>By: {organization}</p>
+        <p>Summary: {summary}</p>
         </div>
-        <button className='add-to-cart-button' onClick={() => this.props.addToCart(this.props.charity.organization)}>Add to cart</button>
+        <button className='add-to-cart-button' onClick={() => this.props.addToCart(organization)}>Add to cart</button>
       </div>
     );
   };
 }
-export default CharityList;
+export default Charity;

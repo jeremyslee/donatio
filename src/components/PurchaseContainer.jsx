@@ -9,17 +9,22 @@ class PurchaseContainer extends Component {
       removeFromCart,
       processTransaction,
       transactionConfirmed,
+      cartTotal,
+      transactionNumber,
     } = this.props
     return (
       <div>
         {
           transactionConfirmed ?
-          <TransactionConfirmation />
+          <TransactionConfirmation
+            transactionNumber={transactionNumber}
+            />
           :
           <ShoppingCart
             addedToCart={addedToCart}
             removeFromCart={removeFromCart}
             processTransaction={processTransaction}
+            cartTotal={cartTotal}
             />
         }
       </div>
