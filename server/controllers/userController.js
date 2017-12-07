@@ -27,7 +27,6 @@ const userController = {
             last_name: req.body.lastname,
         });
 
-
         bcrypt.hash(req.body.password, 10, function (err, hash) {
             let query = {
                 text: 'INSERT INTO "user" (email, username, password, first_name, last_name) VALUES($1, $2, $3, $4, $5)',

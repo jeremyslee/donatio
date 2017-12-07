@@ -14,6 +14,31 @@ const charityController = {
                 res.status(404).send(err)
             });
     },
+    getCountries(req, res, next) {
+        console.log(req.body)
+        const query = 'SELECT DISTINCT "country" FROM "charity"';
+        db.conn.many(query)
+                .then(data => {
+                    res.send(data)
+            })
+            .catch(err => {
+                console.log('The error is', err);
+                res.status(404).send(err)
+            });
+    },
+    getCategories(req, res, next) {
+        console.log(req.body)
+        const query = 'SELECT DISTINCT "category" FROM "charity"';
+        db.conn.many(query)
+                .then(data => {
+                    res.send(data)
+            })
+            .catch(err => {
+                console.log('The error is', err);
+                res.status(404).send(err)
+            });
+    },
+    
     getPurchaseHistory(req, res, next) {
       const userId = req.body.userId
       console.log('userId:', userId)

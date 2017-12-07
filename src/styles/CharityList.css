@@ -1,0 +1,29 @@
+.selectDiv {
+    display: block;
+    margin-left: 500px;
+
+}
+
+.title {
+    text-align: center;
+}
+
+.title2 {
+    text-align: center;
+}
+
+.select {
+    color:#F9690E
+}
+
+.showMore {
+    background-color: #F9690E;
+    color: white;
+    padding: 14px 20px;
+    margin-left: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: block;
+    margin: 0 auto;
+}

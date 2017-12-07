@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CartItem from './CartItem.jsx'
 import axios from 'axios'
+import '../styles/ShoppingCart.css';
 
 class ShoppingCart extends Component {
   render() {
@@ -27,14 +28,18 @@ class ShoppingCart extends Component {
         {
           addedToCart.length > 0
           ?
-          <div>
+          <div className='shoppingCart'>
             My Shopping Cart
+            <hr/>
             {items}
-            <h4>Cart total: ${cartTotal}.00</h4>
-            <button onClick={processTransaction}>Donate Now!</button>
+            <hr/>
+            <h4 className='total'>Cart total: ${cartTotal}.00</h4>
+            <button className='donateBtn' onClick={processTransaction}>Donate Now!</button>
           </div>
           :
-          'Your cart is empty'
+          <div className='empty'>
+          Your cart is empty
+          </div>
         }
       </div>
     );

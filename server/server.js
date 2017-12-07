@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const userController = require('./controllers/userController');
 const charityController = require('./controllers/charityController');
+const forgotController = require('./controllers/forgotController');
 const logger = require('morgan');
 const scrapeController = require('./scraper');
 
@@ -29,6 +30,12 @@ app.post('/login', userController.postLogin)
 app.post('/signup', userController.createUser)
 
 app.get('/getCharityInfo', charityController.getCharityInfo)
+
+app.get('/getCountry', charityController.getCountries)
+
+app.get('/getCategory', charityController.getCategories)
+
+app.post('/forgot_password', forgotController.forgotPassword);
 
 app.post('/processPurchase', charityController.processPurchase)
 

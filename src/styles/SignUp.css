@@ -3,19 +3,23 @@
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: none;
+    border-bottom: 1px solid #ccc;
     box-sizing: border-box;
 }
 
+.firstname,.lastname,.signupemail,.signupusername,.signuppassword,.signuprstPassword:focus {
+    outline: none;
+}
+
 .signupbtn {
-    background-color: #4ECDC4;
+    background-color: #F9690E;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 18px;
     width:50%
 }
 
@@ -27,8 +31,7 @@
     border: none;
     cursor: pointer;
     color:white;
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 18px;
     width:50%
 }
 
@@ -38,7 +41,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
+    font-size: 18px;
 }
 
 

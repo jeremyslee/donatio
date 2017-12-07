@@ -24,6 +24,7 @@ class App extends Component {
           country: ''
         }
       ],
+      itemsToShow: 5,
       isLoggedIn: undefined,
       isLoggedInPage: null,
       isSignedIn: null,
@@ -39,8 +40,14 @@ class App extends Component {
       cartTotal: 0,
       transactionNumber: undefined,
       transactionConfirmed: false,
+      resetPassword: null,
       userId: undefined,
+      selectedCountry: '',
+      selectedCategory: '',
+      countries: [],
+      categories: []
     }
+    this.showMore = this.showMore.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
     this.login = this.login.bind(this)
@@ -49,6 +56,9 @@ class App extends Component {
     this.addToCart = this.addToCart.bind(this)
     this.removeFromCart = this.removeFromCart.bind(this)
     this.processTransaction = this.processTransaction.bind(this)
+    this.resetPassword = this.resetPassword.bind(this)
+    this.handleChangeCategory = this.handleChangeCategory.bind(this)
+    this.handleChangeCountry = this.handleChangeCountry.bind(this)
   }
 
   componentDidMount() {
@@ -59,6 +69,26 @@ class App extends Component {
     .catch((error)=>{
       console.log(error)
     })
+
+    axios.get('/getCountry')
+    .then((response) => {
+      this.setState({countries: response.data})
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+
+    axios.get('/getCategory')
+    .then((response) => {
+      this.setState({categories: response.data})
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+
+  showMore() {
+    this.setState({ itemsToShow: this.state.itemsToShow + 5 })
   }
 
   handleChange(e) {
@@ -185,6 +215,31 @@ class App extends Component {
     }
   }
 
+  resetPassword(e) {
+    e.preventDefault()
+    const { email } = this.state
+    if (email) {
+      axios.post('/forgot_password', {
+        email
+      })
+        .then(() => {
+          this.setState({ resetPassword: true })
+        })
+        .catch(() => {
+          this.setState({ resetPassword: false })
+        });
+    }
+  }
+
+  handleChangeCountry(selectedOption) {
+    this.setState({ selectedCountry: selectedOption ? selectedOption.value : null })
+  }
+
+  handleChangeCategory(selectedOption) {
+    this.setState({ selectedCategory: selectedOption ? selectedOption.value : null });
+  }
+
+
   render() {
     return (
       <div className="app">
@@ -200,7 +255,16 @@ class App extends Component {
         <Route exact path='/'
           render={(props) => <CharityList {...props}
             charityList={this.state.charityList}
+            expanded={this.state.expanded}
+            showMore={this.showMore}
+            selectedCountry={this.state.selectedCountry}
+            selectedCategory={this.state.selectedCategory}
+            handleChangeCountry={this.handleChangeCountry}
+            handleChangeCategory={this.handleChangeCategory}
+            countries={this.state.countries}
+            categories={this.state.categories}
             addToCart={this.addToCart}
+            itemsToShow={this.state.itemsToShow}
           />}
         />
         <Route exact path='/login'
@@ -219,6 +283,7 @@ class App extends Component {
           render={(props) => <ForgotPassword {...props}
             email={this.state.email}
             handleChange={this.handleChange}
+            resetPassword={this.resetPassword}
           />}
         />
         <Route exact path='/signup'

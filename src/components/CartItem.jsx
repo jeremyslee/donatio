@@ -7,9 +7,9 @@ class CartItem extends Component {
     const { removeFromCart, id } = this.props
     return (
       <div className='cart-item'>
-        <h4>{organization}</h4>
-        <h4>${amount}.00</h4>
-        <button onClick={() => removeFromCart(id)}>Remove</button>
+        <h4 className='organizationName'>{organization}</h4>
+        <h4 className='amount'>${amount}.00</h4>
+        <button className='removeBtn' onClick={() => removeFromCart(id)}>Remove</button>
       </div>
     );
   };

@@ -1,0 +1,16 @@
+.accountDetails {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.logoutBtn {
+    background-color: #F9690E;
+    color: white;
+    padding: 14px 20px;
+    display: block;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
