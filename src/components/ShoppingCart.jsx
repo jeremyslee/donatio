@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import CartItem from './CartItem.jsx'
+import axios from 'axios'
 
 class ShoppingCart extends Component {
   render() {
     const {
       addedToCart,
       processTransaction,
+      cartTotal
     } = this.props
+
     const items = addedToCart.map(
       (item, index) => {
-        return <CartItem key={index} id={index} addedToCart={this.props.addedToCart} item={item} removeFromCart={this.props.removeFromCart}/>
+        return <CartItem
+          key={index}
+          id={index}
+          addedToCart={this.props.addedToCart}
+          item={item}
+          removeFromCart={this.props.removeFromCart}
+          />
       }
     )
+
     return (
       <div>
         {
@@ -20,6 +30,7 @@ class ShoppingCart extends Component {
           <div>
             My Shopping Cart
             {items}
+            <h4>Cart total: ${cartTotal}.00</h4>
             <button onClick={processTransaction}>Donate Now!</button>
           </div>
           :

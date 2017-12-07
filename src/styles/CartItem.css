@@ -1,0 +1,10 @@
+.cart-item {
+  margin: 10px;
+  border-style: solid;
+  border-radius: 2px;
+  border-width: 1px;
+}
+
+h4 {
+  display: inline;
+}

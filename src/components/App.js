@@ -36,6 +36,8 @@ class App extends Component {
       firstname: '',
       lastname: '',
       addedToCart: [],
+      cartTotal: 0,
+      transactionNumber: undefined,
       transactionConfirmed: false,
       userId: undefined,
     }
@@ -73,7 +75,13 @@ class App extends Component {
         passwordLogin
       })
         .then((response) => {
-          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '', userId: response.data.id })
+          this.setState({
+            isLoggedInPage: true,
+            isLoggedIn: successUsername,
+            usernameLogin: '',
+            passwordLogin: '',
+            userId: response.data.id
+          })
         })
         .catch(() => {
           this.setState({ isLoggedInPage: false })
@@ -82,7 +90,12 @@ class App extends Component {
   }
 
   logout() {
-    this.setState({ isLoggedIn: false, isSignedIn: false })
+    this.setState({
+      isLoggedIn: false,
+      isSignedIn: false,
+      addedToCart: [],
+      cartTotal: 0,
+     })
   }
 
   createAccount(e) {
@@ -129,21 +142,47 @@ class App extends Component {
       }
     }
     if (!alreadyInCart) addedToCart.push({organization, amount: 5})
-    this.setState({addedToCart: addedToCart})
+    this.setState((prevState, props) => {
+      return {
+        transactionConfirmed: false,
+        addedToCart: addedToCart,
+        cartTotal: prevState.cartTotal + 5,
+      }
+    })
   }
 
   removeFromCart(item) {
     let currentCart = this.state.addedToCart.slice()
+    let amount = this.state.addedToCart[item].amount
     currentCart.splice(item, 1)
-    this.setState({addedToCart: currentCart})
+    this.setState((prevState, props) => {
+      return {
+        addedToCart: currentCart,
+        cartTotal: prevState.cartTotal - amount,
+      }
+    })
   }
 
   processTransaction() {
-    console.log('transaction processed')
-    this.setState({
-      transactionConfirmed: true,
-      addedToCart: [],
-    })
+    if (this.state.userId) {
+      axios.post('/processPurchase', {
+        userId: this.state.userId,
+        cartTotal: this.state.cartTotal
+      })
+      .then((response) => {
+        this.setState({transactionNumber: response.data.id})
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+      this.setState({
+        transactionConfirmed: true,
+        addedToCart: [],
+        cartTotal: 0
+      })
+    } else {
+      console.log('You are not logged in')
+    }
   }
 
   render() {
@@ -202,6 +241,9 @@ class App extends Component {
             removeFromCart={this.removeFromCart}
             processTransaction={this.processTransaction}
             transactionConfirmed={this.state.transactionConfirmed}
+            cartTotal={this.state.cartTotal}
+            userId={this.state.userId}
+            transactionNumber={this.state.transactionNumber}
             />}
           />
       </div>
