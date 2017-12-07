@@ -9,7 +9,7 @@ class ForgotPassword extends Component {
                 Enter your email address and we will send you a link to reset it.<br /> <br/>
                 <p style={{'fontWeight': 'bold'}}>Email </p> 
                 <input className='emailInput' type='email' name='email' value={this.props.email} onChange={this.props.handleChange}/><br/>
-                <button className='resetPass'> Reset password </button>
+                <button className='resetPass' onClick={this.props.resetPassword}> Reset password </button>
             </div>
         );
     };

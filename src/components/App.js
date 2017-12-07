@@ -37,6 +37,7 @@ class App extends Component {
       lastname: '',
       addedToCart: [],
       transactionConfirmed: false,
+      resetPassword: null
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
@@ -46,6 +47,7 @@ class App extends Component {
     this.addToCart = this.addToCart.bind(this)
     this.removeFromCart = this.removeFromCart.bind(this)
     this.processTransaction = this.processTransaction.bind(this)
+    this.resetPassword = this.resetPassword.bind(this)
   }
 
   componentDidMount() {
@@ -145,6 +147,22 @@ class App extends Component {
     })
   }
 
+  resetPassword(e) {
+    e.preventDefault()
+    const { email } = this.state
+    if (email) {
+      axios.post('/forgot_password', {
+        email
+      })
+        .then(() => {
+          this.setState({ resetPassword: true })
+        })
+        .catch(() => {
+          this.setState({ resetPassword: false })
+        });
+    }
+  }
+
   render() {
     return (
       <div className="app">
@@ -178,6 +196,7 @@ class App extends Component {
           render={(props) => <ForgotPassword {...props}
             email={this.state.email}
             handleChange={this.handleChange}
+            resetPassword={this.resetPassword}
           />}
         />
         <Route exact path='/signup'

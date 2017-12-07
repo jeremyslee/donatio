@@ -29,6 +29,7 @@
     "express": "^4.16.2",
     "file-system": "^2.2.2",
     "morgan": "^1.9.0",
+    "nodemailer": "^4.4.0",
     "path": "^0.12.7",
     "pg-promise": "^7.3.2",
     "react": "^16.2.0",
