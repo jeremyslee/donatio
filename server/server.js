@@ -31,9 +31,15 @@ app.post('/signup', userController.createUser)
 
 app.get('/getCharityInfo', charityController.getCharityInfo)
 
-// app.get('/forgot_password', userHandlers.render_forgot_password_template)
+app.get('/getCountry', charityController.getCountries)
+
+app.get('/getCategory', charityController.getCategories)
 
 app.post('/forgot_password', forgotController.forgotPassword);
+
+app.post('/processPurchase', charityController.processPurchase)
+
+app.post('/purchaseHistory', charityController.getPurchaseHistory)
 
 app.get('/crawler', scrapeController.scrapeCharity)
 

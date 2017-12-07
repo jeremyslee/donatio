@@ -1,0 +1,25 @@
+.navigation {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #F9690E;
+}
+
+li {
+  padding: 0 10px 0 10px;
+  display: inline-block;
+  background-color: #F9690E;
+}
+
+li .links {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li .links:hover {
+  background-color: #D35400;
+}

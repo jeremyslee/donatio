@@ -13,16 +13,6 @@ const forgotController = {
                 console.log('The error is', err);
                 res.status(404).send(err)
             });
-    },
-    // createRandomToken(user, done, next) {
-    //     crypto.randomBytes(20, function(err, buffer) {
-    //       const token = buffer.toString('hex');
-    //       done(err, user, token)
-    //       next()
-    //     });
-    // },
-    // replacePassword(user, token, done, next) {
-
-    // }
+    }
 }
 module.exports = forgotController;

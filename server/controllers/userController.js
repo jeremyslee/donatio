@@ -8,7 +8,7 @@ const userController = {
         db.conn.one(query)
             .then(postLogin => {
                 if (bcrypt.compareSync(req.body.passwordLogin, postLogin.password)) {
-                    res.status(200).send({ 'msg': 'Login successful' });
+                    res.status(200).send({ 'msg': 'Login successful', 'id': `${postLogin.user_id}`  });
                 }else {
                     console.log('Password dont match')
                 }
@@ -26,7 +26,6 @@ const userController = {
             first_name: req.body.firstname,
             last_name: req.body.lastname,
         });
-
 
         bcrypt.hash(req.body.password, 10, function (err, hash) {
             let query = {

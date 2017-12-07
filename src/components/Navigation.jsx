@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/App.css';
+import '../styles/Navigation.css';
 
 class Navigation extends Component {
   render() {
@@ -8,9 +8,9 @@ class Navigation extends Component {
     return (
       <div className='nav'>
         <ul className='navigation'>
-        <li><Link to='/'>home</Link></li>
-        <li><Link to='/login'>{this.props.isLoggedIn || this.props.isSignedIn ? `Hello ${this.props.isLoggedIn}!` : 'login'}</Link></li>
-        <li><Link to='/cart'>{numItemsInCart > 0 ? `cart: ${numItemsInCart}` : 'cart'}</Link></li>
+        <li><Link className='links' to='/'>Home</Link></li>
+        <li><Link className='links' to='/login'>{this.props.isLoggedIn || this.props.isSignedIn ? `Hello ${this.props.isLoggedIn}!` : 'Login'}</Link></li>
+        <li><Link className='links' to='/cart'>{numItemsInCart > 0 ? `Cart: ${numItemsInCart}` : 'Cart'}</Link></li>
         </ul>
       </div>
     );

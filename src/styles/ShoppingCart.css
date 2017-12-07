@@ -1,0 +1,16 @@
+.shoppingCart {
+    margin: 30px;
+    font-size: 18px;
+}
+.empty {
+    margin: 30px;
+    font-size: 18px;
+}
+.donateBtn {
+    background-color: #F9690E;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}

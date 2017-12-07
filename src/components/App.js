@@ -24,6 +24,8 @@ class App extends Component {
           country: ''
         }
       ],
+      itemsToShow: 5,
+      expanded: false,
       isLoggedIn: undefined,
       isLoggedInPage: null,
       isSignedIn: null,
@@ -36,9 +38,17 @@ class App extends Component {
       firstname: '',
       lastname: '',
       addedToCart: [],
+      cartTotal: 0,
+      transactionNumber: undefined,
       transactionConfirmed: false,
-      resetPassword: null
+      resetPassword: null,
+      userId: undefined,
+      selectedCountry: '',
+      selectedCategory: '',
+      countries: [],
+      categories: []
     }
+    this.showMore = this.showMore.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
     this.login = this.login.bind(this)
@@ -48,6 +58,8 @@ class App extends Component {
     this.removeFromCart = this.removeFromCart.bind(this)
     this.processTransaction = this.processTransaction.bind(this)
     this.resetPassword = this.resetPassword.bind(this)
+    this.handleChangeCategory = this.handleChangeCategory.bind(this)
+    this.handleChangeCountry = this.handleChangeCountry.bind(this)
   }
 
   componentDidMount() {
@@ -58,6 +70,30 @@ class App extends Component {
     .catch((error)=>{
       console.log(error)
     })
+
+    axios.get('/getCountry')
+    .then((response) => {
+      this.setState({countries: response.data})
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+
+    axios.get('/getCategory')
+    .then((response) => {
+      this.setState({categories: response.data})
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+
+  showMore() {
+    (this.state.itemsToShow === 5) ?
+    this.setState({ itemsToShow: this.state.charityList.length, expanded: true})
+    : 
+    this.setState({ itemsToShow: 5, expanded: false})
+
   }
 
   handleChange(e) {
@@ -73,8 +109,14 @@ class App extends Component {
         usernameLogin,
         passwordLogin
       })
-        .then(() => {
-          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' })
+        .then((response) => {
+          this.setState({
+            isLoggedInPage: true,
+            isLoggedIn: successUsername,
+            usernameLogin: '',
+            passwordLogin: '',
+            userId: response.data.id
+          })
         })
         .catch(() => {
           this.setState({ isLoggedInPage: false })
@@ -83,7 +125,12 @@ class App extends Component {
   }
 
   logout() {
-    this.setState({ isLoggedIn: false, isSignedIn: false })
+    this.setState({
+      isLoggedIn: false,
+      isSignedIn: false,
+      addedToCart: [],
+      cartTotal: 0,
+     })
   }
 
   createAccount(e) {
@@ -130,21 +177,47 @@ class App extends Component {
       }
     }
     if (!alreadyInCart) addedToCart.push({organization, amount: 5})
-    this.setState({addedToCart: addedToCart})
+    this.setState((prevState, props) => {
+      return {
+        transactionConfirmed: false,
+        addedToCart: addedToCart,
+        cartTotal: prevState.cartTotal + 5,
+      }
+    })
   }
 
   removeFromCart(item) {
     let currentCart = this.state.addedToCart.slice()
+    let amount = this.state.addedToCart[item].amount
     currentCart.splice(item, 1)
-    this.setState({addedToCart: currentCart})
+    this.setState((prevState, props) => {
+      return {
+        addedToCart: currentCart,
+        cartTotal: prevState.cartTotal - amount,
+      }
+    })
   }
 
   processTransaction() {
-    console.log('transaction processed')
-    this.setState({
-      transactionConfirmed: true,
-      addedToCart: [],
-    })
+    if (this.state.userId) {
+      axios.post('/processPurchase', {
+        userId: this.state.userId,
+        cartTotal: this.state.cartTotal
+      })
+      .then((response) => {
+        this.setState({transactionNumber: response.data.id})
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+      this.setState({
+        transactionConfirmed: true,
+        addedToCart: [],
+        cartTotal: 0
+      })
+    } else {
+      console.log('You are not logged in')
+    }
   }
 
   resetPassword(e) {
@@ -163,6 +236,15 @@ class App extends Component {
     }
   }
 
+  handleChangeCountry(selectedOption) {
+    this.setState({ selectedCountry: selectedOption.value })
+  }
+
+  handleChangeCategory(selectedOption) {
+    this.setState({ selectedCategory: selectedOption.value });
+  }
+
+
   render() {
     return (
       <div className="app">
@@ -178,6 +260,14 @@ class App extends Component {
         <Route exact path='/'
           render={(props) => <CharityList {...props}
             charityList={this.state.charityList}
+            expanded={this.state.expanded}
+            showMore={this.showMore}
+            selectedCountry={this.state.selectedCountry}
+            selectedCategory={this.state.selectedCategory}
+            handleChangeCountry={this.handleChangeCountry}
+            handleChangeCategory={this.handleChangeCategory}
+            countries={this.state.countries}
+            categories={this.state.categories}
             addToCart={this.addToCart}
           />}
         />
@@ -190,6 +280,7 @@ class App extends Component {
             handleChange={this.handleChange}
             login={this.login}
             logout={this.logout}
+            userId={this.state.userId}
           />}
         />
         <Route exact path='/forgotPass'
@@ -219,6 +310,9 @@ class App extends Component {
             removeFromCart={this.removeFromCart}
             processTransaction={this.processTransaction}
             transactionConfirmed={this.state.transactionConfirmed}
+            cartTotal={this.state.cartTotal}
+            userId={this.state.userId}
+            transactionNumber={this.state.transactionNumber}
             />}
           />
       </div>
