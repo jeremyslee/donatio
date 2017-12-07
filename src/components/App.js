@@ -6,6 +6,7 @@ import LoginContainer from './LoginContainer.jsx'
 import CharityList from './CharityList.jsx'
 import PurchaseContainer from './PurchaseContainer.jsx'
 import SignUp from './SignUp.jsx'
+import ForgotPassword from './ForgotPassword.jsx'
 import axios from 'axios'
 
 class App extends Component {
@@ -14,12 +15,13 @@ class App extends Component {
     this.state = {
       charityList: [
         {
+          charity_id: null,
           organization: '',
           title: '',
           image: '',
           summary: '',
           category: '',
-          country: '',
+          country: ''
         }
       ],
       isLoggedIn: undefined,
@@ -32,17 +34,23 @@ class App extends Component {
       rstPassword: '',
       email: '',
       firstname: '',
-      lastname: ''
+      lastname: '',
+      addedToCart: [],
+      transactionConfirmed: false,
+      userId: undefined,
     }
     this.handleChange = this.handleChange.bind(this)
     this.logout = this.logout.bind(this)
     this.login = this.login.bind(this)
     this.createAccount = this.createAccount.bind(this)
     this.cancel = this.cancel.bind(this)
+    this.addToCart = this.addToCart.bind(this)
+    this.removeFromCart = this.removeFromCart.bind(this)
+    this.processTransaction = this.processTransaction.bind(this)
   }
 
   componentDidMount() {
-    axios.get('/crawler')
+    axios.get('/getCharityInfo')
     .then((response) => {
       this.setState({charityList: response.data})
     })
@@ -64,8 +72,8 @@ class App extends Component {
         usernameLogin,
         passwordLogin
       })
-        .then(() => {
-          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '' })
+        .then((response) => {
+          this.setState({ isLoggedInPage: true, isLoggedIn: successUsername, usernameLogin: '', passwordLogin: '', userId: response.data.id })
         })
         .catch(() => {
           this.setState({ isLoggedInPage: false })
@@ -107,9 +115,35 @@ class App extends Component {
     }
   }
 
-
   cancel() {
     this.setState({ email: '', username: '', password: '', rstPassword: '', firstname: '', lastname: '' })
+  }
+
+  addToCart(organization) {
+    let addedToCart = this.state.addedToCart.slice()
+    let alreadyInCart = false
+    for (let i = 0; i < addedToCart.length; i += 1) {
+      if(addedToCart[i].organization === organization) {
+        alreadyInCart = true
+        addedToCart[i].amount += 5
+      }
+    }
+    if (!alreadyInCart) addedToCart.push({organization, amount: 5})
+    this.setState({addedToCart: addedToCart})
+  }
+
+  removeFromCart(item) {
+    let currentCart = this.state.addedToCart.slice()
+    currentCart.splice(item, 1)
+    this.setState({addedToCart: currentCart})
+  }
+
+  processTransaction() {
+    console.log('transaction processed')
+    this.setState({
+      transactionConfirmed: true,
+      addedToCart: [],
+    })
   }
 
   render() {
@@ -121,11 +155,13 @@ class App extends Component {
             usernameLogin={this.state.usernameLogin}
             isSignedIn={this.state.isSignedIn}
             username={this.state.username}
+            addedToCart={this.state.addedToCart}
           />}
         />
         <Route exact path='/'
           render={(props) => <CharityList {...props}
             charityList={this.state.charityList}
+            addToCart={this.addToCart}
           />}
         />
         <Route exact path='/login'
@@ -137,6 +173,13 @@ class App extends Component {
             handleChange={this.handleChange}
             login={this.login}
             logout={this.logout}
+            userId={this.state.userId}
+          />}
+        />
+        <Route exact path='/forgotPass'
+          render={(props) => <ForgotPassword {...props}
+            email={this.state.email}
+            handleChange={this.handleChange}
           />}
         />
         <Route exact path='/signup'
@@ -153,7 +196,14 @@ class App extends Component {
             cancel={this.cancel}
           />}
         />
-        <Route path='/cart' component={PurchaseContainer} />
+        <Route path='/cart'
+          render={(props) => <PurchaseContainer
+            addedToCart={this.state.addedToCart}
+            removeFromCart={this.removeFromCart}
+            processTransaction={this.processTransaction}
+            transactionConfirmed={this.state.transactionConfirmed}
+            />}
+          />
       </div>
     );
   }

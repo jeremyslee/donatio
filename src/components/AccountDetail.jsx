@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PurchaseHistory from './PurchaseHistory.jsx';
 
 class AccountDetail extends Component {
   render() {
@@ -6,6 +7,7 @@ class AccountDetail extends Component {
       <div>
         Account Details
         <br />You are logged in.
+        <PurchaseHistory userId={this.props.userId} />
         <div>
         <button onClick={this.props.logout}>logout</button>
         </div>
