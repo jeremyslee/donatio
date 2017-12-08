@@ -8,7 +8,7 @@ class SignUp extends Component {
         return (
             <div>
                 <div id='create_account_form'>
-                <h1> Create Account </h1>
+                <h2 style={{'color': '#F9690E'}}> Create Account </h2>
                     <form onSubmit={this.props.createAccount}>
                         <input className='firstname' name='firstname' type='text' placeholder='Firstname' value={firstname} onChange={handleChange} /><br />
                         <input className='lastname' name='lastname' type='text' placeholder='Lastname' value={lastname} onChange={handleChange} /><br />
